@@ -33,8 +33,6 @@ namespace ProjectPartA_A2
         {
             int menuSel = 5;
 
-            Console.ReadLine();
-
             return menuSel;
         }
         private static void MenuExecution(int menuSel)
