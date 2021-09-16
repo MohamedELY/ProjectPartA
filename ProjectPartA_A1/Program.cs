@@ -122,7 +122,7 @@ namespace ProjectPartA_A1
                     {
                         //Split the string where the ';'char is located.
                         var sSpliter = sArtical.Split(';');
-
+                        
                         //If you can convert the the right side of the string into decimal, save value...
                         if (decimal.TryParse(sSpliter[1], out decimal validPrice))
                         {
