@@ -169,7 +169,7 @@ namespace ProjectPartA_A1
             //Clears the console.
             Console.Clear();
 
-            //Print out how many items purchased.
+            //Print out how many items purchased and font.
             Console.WriteLine("\nReciept: Purchased Articles");
             Console.WriteLine($"Number of items purchased: {nrArticles}\n");
             Console.WriteLine("{0,0} {1,-20} {2,-20:C2}", "#", "Name", "Price");

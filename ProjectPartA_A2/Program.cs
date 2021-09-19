@@ -13,7 +13,9 @@ namespace ProjectPartA_A2
             public decimal Price;
         }
 
-
+        /// <summary>
+        /// Will hold the value name of the article that the user whant's to delite
+        /// </summary>
         public static string removerInput;
 
         /// <summary>
@@ -27,9 +29,9 @@ namespace ProjectPartA_A2
         public static bool incorrectInput;
 
         /// <summary>
-        /// Bool that will be use'd to check if string can Parse to double.
+        /// Will keep track off the total cost of all the active items.
         /// </summary>
-        public static bool canParse;
+        public static decimal totalPrice = 0;
 
         /// <summary>
         /// Will hold the value of how many article's the user whant's.
@@ -63,6 +65,7 @@ namespace ProjectPartA_A2
         static void Main(string[] args)
         {
             Run();
+            
         }
 
         /// <summary>
@@ -98,7 +101,7 @@ namespace ProjectPartA_A2
 
                 //Print receipte by price
                 case "3":
-
+                    PrintRecieptByPrice();
                     break;
 
                 //Print receipte by name
@@ -125,7 +128,7 @@ namespace ProjectPartA_A2
                 //Ask the user for a input.
                 Console.WriteLine($"\n\nPleas enter name and price for the article in this format name; price (example Beer; 2,25)");
                 Console.Write("Input:");
-
+                
                 string sArtical = Console.ReadLine();
                 //If the input Contains a ';' character.
                 if (sArtical.Contains(';'))
@@ -145,6 +148,9 @@ namespace ProjectPartA_A2
                                 Name = sSpliter[0],
                                 Price = validPrice
                             };
+                            //Add the sum too total price
+                            totalPrice += validPrice;
+                            
                             //And Break loop.
                             incorrectInput = false;
 
@@ -198,6 +204,7 @@ namespace ProjectPartA_A2
                             Console.WriteLine("Item deleted successfuly!\n");
                             Console.WriteLine(@"Press ""Enter"" to continue.");
                             Console.ReadLine();
+                            break;
                         }
                         //Else...
                         else
@@ -206,6 +213,8 @@ namespace ProjectPartA_A2
                             Console.WriteLine("The item was not found.\n");
                             Console.WriteLine(@"Press ""Enter"" to continue.");
                             Console.ReadLine();
+                            break;
+                            
                         }
                     }
                     //if the article is not found yet.
@@ -214,9 +223,12 @@ namespace ProjectPartA_A2
                         //if the article was found...
                         if (articles[i].Name.CompareTo(removerInput) == 0)
                         {
-                            //Remove the article, set the "article found" indicator to true. 
-                            articles[i] = new Article();
+                            //Remove the article, set the "article found" indicator to true. Delite 1 from counter and the price from total. 
+                            totalPrice -= articles[i].Price;
+                            articles[i] = new Article();                           
+                            nrArticlesCounter--;
                             found = 1;
+
                         }
 
                     }
@@ -238,9 +250,52 @@ namespace ProjectPartA_A2
                 Console.ReadLine();
             }            
         }
-        private static void PrintReciept(string title)
+        private static void PrintRecieptByPrice()
         {
-            //Your code to print a receipt
+            //Clears the console.
+            Console.Clear();
+
+            //Print out how many items purchased and font.
+            Console.WriteLine("\nReciept: Purchased Articles\n");
+            Console.WriteLine("{0,0} {1,-20} {2,-20:C2}", "#", "Name", "Price");
+
+            //While the array is not sorted by price...
+            bool notSorted = true;
+            while (notSorted)
+            {
+                //Set loop to fals
+                notSorted = false;
+                //Go thrue all the array's variabel's.
+                for (int i = 0; i < nrArticlesCounter-1; i++)
+                {
+                    //If the curent varieble is higher then the next...
+                    if(articles[i].Price > articles[i + 1].Price)
+                    {
+                        //Switch place and activate the loop agien.
+                        decimal temp = 0;
+                        temp = articles[i].Price;
+                        articles[i].Price = articles[i+1].Price;
+                        articles[i + 1].Price = temp;
+                        notSorted = true;
+                    }                   
+                }
+            }
+
+            //Do this as meny times as item's purchased...
+            for (int i = 0; i < nrArticlesCounter; i++)
+            {
+                //Print out article Name and and price in a nice format.
+                Console.WriteLine("{0,0} {1,-20} {2,-20:C2}", i + 1, articles[i].Name, articles[i].Price);
+            }
+
+            //Print out Total Price, Date and VAT cost.
+            Console.WriteLine($"\nTotal Cost:\t       {totalPrice:C2}");
+            Console.WriteLine($"Includes VAT~25%:\t{totalPrice * _vat:C2}");
+            Console.WriteLine($"\nPurchase date: {DateTime.Now}\n\n");
+
+            //Tell the user to press "Enter" to go back.
+            Console.WriteLine(@"Press ""Enter"" to go back.");
+            Console.ReadLine();
         }
 
         private static void SortArticles(bool sortByName = false)
