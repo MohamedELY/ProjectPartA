@@ -4,79 +4,55 @@ namespace ProjectPartA_A2
 {
     class Program
     {
-        /// <summary>
-        /// The Article
-        /// </summary>
+
+        // The Article
         struct Article
         {
             public string Name;
             public decimal Price;
         }
 
-        /// <summary>
-        /// Will hold the value name of the article that the user whant's to delite
-        /// </summary>
+        // Will hold the value name of the article that the user whant's to delite
         public static string removerInput;
 
-        /// <summary>
-        /// Will make the game loop until the user whant's to exit the program.
-        /// </summary>
+        // Will make the programe loop until the user whant's to exit the program.
         public static bool runProgram = true;
 
-        /// <summary>
-        /// a boolien that will check if the input was correct.
-        /// </summary>
+        // A boolien that will check if the input was correct.
         public static bool incorrectInput;
 
-        /// <summary>
-        /// Will keep track off the total cost of all the active items.
-        /// </summary>
+        // Will keep track off the total cost of all the active items.
         public static decimal totalPrice = 0;
 
-        /// <summary>
-        /// Will hold the value of how many article's the user whant's.
-        /// </summary>
+        // Will hold the value of how many article's are alowed.
         const int _maxNrArticles = 10;
 
-        /// <summary>
-        /// Int that will controll the amount of character's the name can have.
-        /// </summary>
+        // Int that will controll the amount of character's the name can have.
         const int _maxArticleNameLength = 20;
 
-        /// <summary>
-        /// Varible that will be used to calculate VAT in total price.
-        /// </summary>
+        // Varible that will be used to calculate VAT in total price.
         const decimal _vat = 0.25M;
 
-        /// <summary>
-        /// Creating a instens of the struct Article
-        /// </summary>
+        // Creating a instens of the struct Article
         static Article[] articles = new Article[_maxNrArticles];
 
-        /// <summary>
-        /// This counder will hold the value of how many articles there is 
-        /// </summary>
+        // This counter will hold the value of how many articles there is 
         static int nrArticlesCounter = 0;
 
-        /// <summary>
-        /// The entry point of the program.
-        /// </summary>
-        /// <param name="args"></param>
+        // The entry point of the program.
         static void Main(string[] args)
         {
-            Run();
-            
+            //Run Program.
+            Run();           
         }
-
-        /// <summary>
-        /// The logic behind how the program shude operate. 
-        /// </summary>
+        
+        //The logic behind how the program shude operate. 
         static void Run()
         {
             //While true....
             while (runProgram)
             {
-                //Print the front meny, takes a int that will display how many articals have been chosen.
+                //Print the front meny, takes a number that will display how many articals have been enterd.
                 Print.FrontMeny(nrArticlesCounter);
 
                 //Handle the meny execution's
@@ -85,36 +61,58 @@ namespace ProjectPartA_A2
             }
         }
 
+        //The diffrent many options.
         public static void MenuExecution()
         {
-            switch (Console.ReadLine())
+            //Try...
+            try 
             {
-                //Enter a article
-                case "1":
-                    ReadAnArticle();
-                    break;
 
-                //Remove a article
-                case "2":
-                    RemoveAnArticle();
-                    break;
+                switch (Console.ReadLine())
+                {
+                    //Enter a article
+                    case "1":
+                        if( nrArticlesCounter >= _maxNrArticles)
+                        {
+                            Console.WriteLine("\nThe total amount of articles can not exided 10!");
+                            Console.WriteLine("Press \"Enter\" to continoue..");
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            ReadAnArticle();
+                        }
+                        break;
 
-                //Print receipte by price
-                case "3":
-                    PrintRecieptByPrice();
-                    break;
+                    //Remove a article
+                    case "2":
+                        RemoveAnArticle();
+                        break;
 
-                //Print receipte by name
-                case "4":
-                    break;
+                    //Print receipte by price
+                    case "3":
+                        PrintRecieptByPrice();
+                        break;
 
-                //Quit programe
-                case "5":
-                    return;
+                    //Print receipte by name
+                    case "4":
+                        PrintRecieptByName();
+                        break;
 
-                default:
-                    Print.InvalidMessage();
-                    break;
+                    //Quit programe
+                    case "5":
+                        runProgram = false;
+                        break;
+
+                    default:
+                        Print.InvalidMessage();
+                        break;
+                }
+            }//Else catch and inform the user what the problem was.
+            catch(Exception eMsg)
+            {
+                //Print what exception has acured. 
+                Console.WriteLine(eMsg.Message);
             }
         }
 
@@ -142,17 +140,21 @@ namespace ProjectPartA_A2
                         //If the left side of the string is not emty and its not bigger then 20 char... 
                         if (sSpliter[0].Length != 0 && sSpliter[0].Length <= _maxArticleNameLength)
                         {
+
                             //Insert the values to the array class article's.
                             articles[nrArticlesCounter++] = new Article
                             {
                                 Name = sSpliter[0],
                                 Price = validPrice
                             };
-                            //Add the sum too total price
-                            totalPrice += validPrice;
+
+                                //Add the sum too total price
+                                totalPrice += validPrice;
                             
-                            //And Break loop.
-                            incorrectInput = false;
+                                //And Break loop.
+                                incorrectInput = false;
+   
+
 
                         }//Else...
                         else
@@ -175,6 +177,8 @@ namespace ProjectPartA_A2
                 }
             }
         }
+
+        //Let's the user remove a article.
         private static void RemoveAnArticle()
         {
             //Clear's the console
@@ -224,10 +228,10 @@ namespace ProjectPartA_A2
                         if (articles[i].Name.CompareTo(removerInput) == 0)
                         {
                             //Remove the article, set the "article found" indicator to true. Delite 1 from counter and the price from total. 
-                            totalPrice -= articles[i].Price;
                             articles[i] = new Article();                           
-                            nrArticlesCounter--;
                             found = 1;
+                            nrArticlesCounter--;
+                            totalPrice -= articles[i].Price;
 
                         }
 
@@ -250,6 +254,8 @@ namespace ProjectPartA_A2
                 Console.ReadLine();
             }            
         }
+
+        //Prints the existing articles by price.
         private static void PrintRecieptByPrice()
         {
             //Clears the console.
@@ -298,9 +304,53 @@ namespace ProjectPartA_A2
             Console.ReadLine();
         }
 
-        private static void SortArticles(bool sortByName = false)
+        //Prints the existing articles by name.
+        private static void PrintRecieptByName()
         {
-            //Your code to Sort. Either BubbleSort or SelectionSort
+            //Clears the console.
+            Console.Clear();
+
+            //Print out how many items purchased and font.
+            Console.WriteLine("\nReciept: Purchased Articles\n");
+            Console.WriteLine("{0,0} {1,-20} {2,-20:C2}", "#", "Name", "Price");
+
+            //While the array is not sorted by price...
+            bool notSorted = true;
+            while (notSorted)
+            {
+                //Set loop to fals
+                notSorted = false;
+                //Go thrue all the array's variabel's.
+                for (int i = 0; i < nrArticlesCounter - 1; i++)
+                {
+                    //If the curent varieble is higher then the next...
+                    if (articles[i].Name.ToLower()[0] > articles[i + 1].Name.ToLower()[0])
+                    {
+                        //Switch place and activate the loop agien.
+                        string temp;
+                        temp = articles[i].Name;
+                        articles[i].Name = articles[i + 1].Name;
+                        articles[i + 1].Name = temp;
+                        notSorted = true;
+                    }
+                }
+            }
+
+            //Do this as meny times as item's purchased...
+            for (int i = 0; i < nrArticlesCounter; i++)
+            {
+                //Print out article Name and and price in a nice format.
+                Console.WriteLine("{0,0} {1,-20} {2,-20:C2}", i + 1, articles[i].Name, articles[i].Price);
+            }
+
+            //Print out Total Price, Date and VAT cost.
+            Console.WriteLine($"\nTotal Cost:\t       {totalPrice:C2}");
+            Console.WriteLine($"Includes VAT~25%:\t{totalPrice * _vat:C2}");
+            Console.WriteLine($"\nPurchase date: {DateTime.Now}\n\n");
+
+            //Tell the user to press "Enter" to go back.
+            Console.WriteLine(@"Press ""Enter"" to go back.");
+            Console.ReadLine();
         }
     }
 }
