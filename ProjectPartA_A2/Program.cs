@@ -46,7 +46,7 @@ namespace ProjectPartA_A2
             Run();           
         }
         
-        //The logic behind how the program shude operate. 
+        // The logic behind how the program shude operate. 
         static void Run()
         {
             //While true....
@@ -54,14 +54,23 @@ namespace ProjectPartA_A2
             {
                 //Print the front meny, takes a number that will display how many articals have been enterd.
                 Print.FrontMeny(nrArticlesCounter);
-
-                //Handle the meny execution's
-                MenuExecution();
-
+                
+                //Try too..
+                try 
+                { 
+                    //Handle the meny execution's.
+                    MenuExecution();
+                }
+                //Else catch... 
+                catch(Exception ex)
+                {
+                    //And print Exaption message for the user.
+                    Print.InvalidMessage(ex.Message);
+                }
             }
         }
 
-        //The diffrent many options.
+        // The diffrent many options.
         public static void MenuExecution()
         {
             //Try...
@@ -104,19 +113,21 @@ namespace ProjectPartA_A2
                         runProgram = false;
                         break;
 
+                    //If no corecct value was typed in the meny...
                     default:
+                        //Tell user that wrong input was enterd.
                         Print.InvalidMessage();
                         break;
                 }
             }//Else catch and inform the user what the problem was.
-            catch(Exception eMsg)
+            catch(Exception ex)
             {
                 //Print what exception has acured. 
-                Console.WriteLine(eMsg.Message);
+                Print.InvalidMessage(ex.Message);
             }
         }
 
-        //Let's the user input a article.
+        // Let's the user input a article.
         private static void ReadAnArticle()
         {
             //While wrong input...
@@ -178,7 +189,7 @@ namespace ProjectPartA_A2
             }
         }
 
-        //Let's the user remove a article.
+        // Let's the user remove a article.
         private static void RemoveAnArticle()
         {
             //Clear's the console
@@ -255,7 +266,7 @@ namespace ProjectPartA_A2
             }            
         }
 
-        //Prints the existing articles by price.
+        // Prints the existing articles by price.
         private static void PrintRecieptByPrice()
         {
             //Clears the console.
@@ -304,7 +315,7 @@ namespace ProjectPartA_A2
             Console.ReadLine();
         }
 
-        //Prints the existing articles by name.
+        // Prints the existing articles by name.
         private static void PrintRecieptByName()
         {
             //Clears the console.

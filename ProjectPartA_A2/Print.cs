@@ -26,11 +26,20 @@ namespace ProjectPartA_A2
             Console.Write("Input: ");
         }
 
+        //tell's the user that a invalid input was enterd with a parameter
+        static public void InvalidMessage(string input)
+        {
+            Console.WriteLine(" ");
+            Console.WriteLine($"{input}\n");
+            Console.WriteLine("Invalid Input was Enterd!");
+            Console.WriteLine("Press \"Enter\" to continoue..");
+            Console.ReadLine();
+        }
+
         //tell's the user that a invalid input was enterd
         static public void InvalidMessage()
         {
-            Console.WriteLine(" ");
-            Console.WriteLine("Invalid Input was Enterd!");
+            Console.WriteLine("\nInvalid Input was Enterd!");
             Console.WriteLine("Press \"Enter\" to continoue..");
             Console.ReadLine();
         }
